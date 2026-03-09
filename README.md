@@ -48,7 +48,7 @@ Para garantizar la fiabilidad del sistema, se ha implementado un banco de prueba
 
 Las pruebas automatizadas validan los siguientes escenarios clave:
 
-### 🧪 Caso de Prueba 1: Verificación de Estado Inicial y Reset
+### Caso de Prueba 1: Verificación de Estado Inicial y Reset
 * **Objetivo:** Confirmar que al iniciar el sistema y mantener el reset (`rst_n = 0`), los buses se mantienen en estados seguros y conocidos.
 * **Acción:** Aplicar un reset asíncrono activo en bajo durante 2 ciclos de reloj y luego liberarlo.
 * **Criterio de Éxito:** Las señales deben inicializarse correctamente:
@@ -57,14 +57,14 @@ Las pruebas automatizadas validan los siguientes escenarios clave:
   * `MOSI` se inicializa en `0`.
   * `MISO` se mantiene en `Z` (Alta impedancia, evitando colisiones en el bus).
 
-### 🔄 Caso de Prueba 2: Comunicación Bidireccional Cruzada (Full-Duplex)
+### Caso de Prueba 2: Comunicación Bidireccional Cruzada (Full-Duplex)
 * **Objetivo:** Validar que el protocolo Full-Duplex funciona correctamente, transmitiendo y recibiendo datos desde ambos extremos de manera simultánea.
 * **Acción:** * Cargar el valor `8'hA5` (10100101 en binario) en el registro del Master.
   * Cargar el valor `8'h3C` (00111100 en binario) en el registro del Slave.
   * Enviar un pulso a la señal `start` del Master.
 * **Criterio de Éxito:** Al levantarse la señal `done`, la salida `master_data_out` debe ser exactamente `0x3C` y la salida `slave_data_out` debe ser `0xA5`. El Testbench imprimirá automáticamente un mensaje de "PASÓ".
 
-### ⏱️ Caso de Prueba 3: Continuidad y Sincronización de Reloj
+### Caso de Prueba 3: Continuidad y Sincronización de Reloj
 * **Objetivo:** Comprobar que el Master puede iniciar una segunda transacción independiente después de finalizar la primera, liberando el bus correctamente entre ambas.
 * **Acción:** Esperar 5 ciclos de reloj en estado `IDLE` tras el Caso 2. Cargar nuevos datos (`8'h55` para el Master y `8'hAA` para el Slave) e iniciar una nueva transmisión con la señal `start`.
 * **Criterio de Éxito:** * `CS_N` debe bajar nuevamente a `0`.
